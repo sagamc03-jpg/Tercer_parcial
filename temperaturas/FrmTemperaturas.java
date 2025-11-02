@@ -21,10 +21,10 @@ import datechooser.beans.DateChooserCombo;
 public class FrmTemperaturas extends JFrame {
 
     private JComboBox cmbCiudad;
-    private DateChooserCombo dccDesde, dccHasta;
-     private JTabbedPane tpCiudadClima;
-     private JPanel pnlGrafica;
-    private JPanel pnlOscilacion;
+    private DateChooserCombo dccDesde, dccHasta, dccDato;
+     private JTabbedPane tpCambiosClima;
+     private JPanel pnlGraficar, pnlRangoFechas, pnlFechaEspecifica;
+    private JPanel pnlOscilacion, pnlClimaGeneral;
 
     public FrmTemperaturas(){
         setTitle("Cambio Climático");
@@ -46,65 +46,84 @@ public class FrmTemperaturas extends JFrame {
         btnDatos.setIcon(new ImageIcon(getClass().getResource("/iconos/datosC.png")));
         btnDatos.setToolTipText("Variación climática");
         btnDatos.addActionListener( new ActionListener() {
-            public void ActionListener(ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 btnDatosClick();
             }
         });
         tb.add(btnDatos);
 
+        // 1er pnl Grafica 
         JPanel pnlCambios = new JPanel();
         pnlCambios.setLayout(new BoxLayout(pnlCambios, BoxLayout.Y_AXIS));
 
-        JPanel pnlDatosProceso = new JPanel();
-        pnlDatosProceso.setPreferredSize(new Dimension(pnlDatosProceso.getWidth(), 50)); // Altura fija de 100px
-        pnlDatosProceso.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
-        pnlDatosProceso.setLayout(null);
+        pnlRangoFechas = new JPanel();
+        pnlRangoFechas.setPreferredSize(new Dimension(pnlRangoFechas.getWidth(), 50)); // Altura fija de 100px
+        pnlRangoFechas.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
+        pnlRangoFechas.setLayout(null);
 
         JLabel lblCiudad = new JLabel("Ciudad: ");
         lblCiudad.setBounds(40, 10, 100, 25);
-        pnlDatosProceso.add(lblCiudad);
+        pnlRangoFechas.add(lblCiudad);
 
         cmbCiudad = new JComboBox();
         cmbCiudad.setBounds(100, 10, 100, 25);
-        pnlDatosProceso.add(cmbCiudad);
+        pnlRangoFechas.add(cmbCiudad);
 
         dccDesde = new DateChooserCombo();
         dccDesde.setBounds(330, 10, 100, 25);
-        pnlDatosProceso.add(dccDesde);
+        pnlRangoFechas.add(dccDesde);
 
         dccHasta = new DateChooserCombo();
         dccHasta.setBounds(220, 10, 100, 25);
-        pnlDatosProceso.add(dccHasta);
+        pnlRangoFechas.add(dccHasta);
 
-        // FECHAS DISPONIBLES
-        //Calendar fechaInicio = new GregorianCalendar(2025, Calendar.JANUARY, 1);
-        //Calendar fechaFin = new GregorianCalendar(2025, Calendar.FEBRUARY, 28);
-        //dccDesde.setMinDate(fechaInicio); dccDesde.setMaxDate(fechaFin);
-        //dccHasta.setMinDate(fechaInicio); dccHasta.setMaxDate(fechaFin);
+        pnlGraficar = new JPanel();
+        JScrollPane spGraficar = new JScrollPane(pnlGraficar);
 
-        pnlGrafica = new JPanel();
-        JScrollPane spGrafica = new JScrollPane(pnlGrafica);
+        pnlCambios.add(pnlRangoFechas);
+        pnlCambios.add(spGraficar);
+  
+        // 2do pnl climas en general
+        pnlClimaGeneral = new JPanel();
+        pnlClimaGeneral.setLayout(new BoxLayout(pnlClimaGeneral, BoxLayout.Y_AXIS));
+
+        pnlFechaEspecifica = new JPanel();
+        pnlFechaEspecifica.setPreferredSize(new Dimension(pnlFechaEspecifica.getWidth(), 50)); // Altura fija de 100px
+        pnlFechaEspecifica.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
+        pnlFechaEspecifica.setLayout(null);
+
+        JLabel lblFecha = new JLabel("Fecha: ");
+        lblFecha.setBounds(40, 10, 100, 25);
+        pnlFechaEspecifica.add(lblFecha);
+
+        dccDato = new DateChooserCombo();
+        dccDato.setBounds(100, 10, 100, 25);
+        pnlFechaEspecifica.add(dccDato);
 
         pnlOscilacion = new JPanel();
 
+        pnlClimaGeneral.add(pnlFechaEspecifica);
+        pnlClimaGeneral.add(pnlOscilacion);
 
-        tpCiudadClima = new JTabbedPane();
-        tpCiudadClima.addTab("Gráfica", spGrafica);
-        tpCiudadClima.addTab("Oscilación", pnlOscilacion);
+        // Componentes
+        tpCambiosClima = new JTabbedPane();
+        tpCambiosClima.addTab("Gráfica", pnlCambios);
+        tpCambiosClima.addTab("Climas", pnlClimaGeneral);
 
 
-
-
-
-        pnlCambios.add(tpCiudadClima);
-        pnlCambios.add(pnlDatosProceso);
         getContentPane().add(tb, BorderLayout.NORTH);
-        getContentPane().add(pnlCambios, BorderLayout.CENTER);
+        getContentPane().add(tpCambiosClima, BorderLayout.CENTER);
 
     }
     
     private void btnGraficarClick() {
+        tpCambiosClima.setSelectedIndex(0);
+        
     }
+
     private void btnDatosClick(){
+        tpCambiosClima.setSelectedIndex(1);
+
+       
     }
 }
