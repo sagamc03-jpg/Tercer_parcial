@@ -1,13 +1,13 @@
 package entidades;
 import java.time.LocalDate;
 
-public class CambioMoneda {
+public class ClimaCiudad {
 
     private String ciudad;
     private LocalDate fecha;
     private double clima;
     
-    public CambioMoneda(String ciudad, LocalDate fecha, double clima) {
+    public ClimaCiudad(String ciudad, LocalDate fecha, double clima) {
         this.ciudad = ciudad;
         this.fecha = fecha;
         this.clima = clima;

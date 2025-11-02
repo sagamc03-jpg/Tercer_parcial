@@ -1,4 +1,5 @@
 import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -11,22 +12,20 @@ import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.awt.ActiveEvent;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import datechooser.beans.DateChooserCombo;
+import servicios.CambioClimaServico;
 
 public class FrmTemperaturas extends JFrame {
 
     private JComboBox cmbCiudad;
     private DateChooserCombo dccDesde, dccHasta, dccDato;
-     private JTabbedPane tpCambiosClima;
-     private JPanel pnlGraficar, pnlRangoFechas, pnlFechaEspecifica;
+    private JTabbedPane tpCambiosClima;
+    private JPanel pnlGraficar, pnlRangoFechas, pnlFechaEspecifica;
     private JPanel pnlOscilacion, pnlClimaGeneral;
 
-    public FrmTemperaturas(){
+    public FrmTemperaturas() {
         setTitle("Cambio Climático");
         setSize(700, 400);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -45,14 +44,14 @@ public class FrmTemperaturas extends JFrame {
         JButton btnDatos = new JButton();
         btnDatos.setIcon(new ImageIcon(getClass().getResource("/iconos/datosC.png")));
         btnDatos.setToolTipText("Variación climática");
-        btnDatos.addActionListener( new ActionListener() {
+        btnDatos.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 btnDatosClick();
             }
         });
         tb.add(btnDatos);
 
-        // 1er pnl Grafica 
+        // 1er pnl Grafica
         JPanel pnlCambios = new JPanel();
         pnlCambios.setLayout(new BoxLayout(pnlCambios, BoxLayout.Y_AXIS));
 
@@ -82,7 +81,7 @@ public class FrmTemperaturas extends JFrame {
 
         pnlCambios.add(pnlRangoFechas);
         pnlCambios.add(spGraficar);
-  
+
         // 2do pnl climas en general
         pnlClimaGeneral = new JPanel();
         pnlClimaGeneral.setLayout(new BoxLayout(pnlClimaGeneral, BoxLayout.Y_AXIS));
@@ -110,20 +109,30 @@ public class FrmTemperaturas extends JFrame {
         tpCambiosClima.addTab("Gráfica", pnlCambios);
         tpCambiosClima.addTab("Climas", pnlClimaGeneral);
 
-
         getContentPane().add(tb, BorderLayout.NORTH);
         getContentPane().add(tpCambiosClima, BorderLayout.CENTER);
 
+        cargarDatos();
     }
-    
+
+    private void cargarDatos() {
+        String nombreArchivo = System.getProperty("user.dir") + "/datos/Temperaturas.csv";
+        var registros = CambioClimaServico.getDatos(nombreArchivo);
+        var ciudad = CambioClimaServico.getCiudad(registros);
+
+        DefaultComboBoxModel modeloCiudad = new DefaultComboBoxModel(ciudad.toArray());
+        cmbCiudad.setModel(modeloCiudad);
+
+
+    }
+
     private void btnGraficarClick() {
         tpCambiosClima.setSelectedIndex(0);
-        
+
     }
 
-    private void btnDatosClick(){
+    private void btnDatosClick() {
         tpCambiosClima.setSelectedIndex(1);
 
-       
     }
 }
