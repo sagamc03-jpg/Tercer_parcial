@@ -1,16 +1,17 @@
 package entidades;
+
 import java.time.LocalDate;
 
-public class ClimaCiudad {
+public class DatosTemperaturas {
 
     private String ciudad;
     private LocalDate fecha;
-    private double clima;
-    
-    public ClimaCiudad(String ciudad, LocalDate fecha, double clima) {
+    private double temperatura;
+
+    public DatosTemperaturas(String ciudad, LocalDate fecha, double temperatura) {
         this.ciudad = ciudad;
         this.fecha = fecha;
-        this.clima = clima;
+        this.temperatura = temperatura;
     }
 
     public String getCiudad() {
@@ -21,9 +22,8 @@ public class ClimaCiudad {
         return fecha;
     }
 
-    public double getClima() {
-        return clima;
+    public double getTemperatura() {
+        return temperatura;
     }
-
 
 }
